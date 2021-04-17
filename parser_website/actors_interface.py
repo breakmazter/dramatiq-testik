@@ -13,6 +13,11 @@ def should_retry(retries_so_far, exception):
     return retries_so_far < 3 and not (isinstance(exception, TimeLimitExceeded) or isinstance(exception, ResultTimeout))
 
 
-@dramatiq.actor(queue_name='mazan_game_test', max_retries=3, time_limit=180000, retry_when=should_retry)
-def game_info(url):
+@dramatiq.actor(store_results=False, queue_name='mazan_game_test', max_retries=3, time_limit=180000, retry_when=should_retry)
+def game_links(url):
+    pass
+
+
+@dramatiq.actor(store_results=True, queue_name='game_info', max_retries=3, time_limit=180000, retry_when=should_retry)
+def game_info(mass_dict_game, url):
     pass
