@@ -8,7 +8,7 @@ COPY requirements.txt /game_info/requirements.txt
 COPY settings.py /game_info/settings.py
 
 RUN pip install --upgrade pip
-RUN python -m pip install --no-cache-dir -U 'dramatiq[rabbitmq, watch]'==1.10.0
+RUN python -m pip install --no-cache-dir -U 'dramatiq[rabbitmq, redis, watch]'==1.10.0
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
 CMD ["python", "website_worker.py"]
