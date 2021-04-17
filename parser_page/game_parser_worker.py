@@ -6,13 +6,17 @@ from bs4 import BeautifulSoup
 import dramatiq
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 from dramatiq.middleware import TimeLimitExceeded
-from dramatiq.results import ResultTimeout
+from dramatiq.results import ResultTimeout, Results
+from dramatiq.results.backends import RedisBackend
 
 from settings import *
 
 PUN = "^\s+|\n|\r|\t|\s+$"
 
+result_backend = RedisBackend(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
 broker = RabbitmqBroker(url=RABBITMQ_URL)
+broker.add_middleware(Results(backend=result_backend))
+
 dramatiq.set_broker(broker)
 
 
