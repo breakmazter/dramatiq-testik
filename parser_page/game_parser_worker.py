@@ -12,7 +12,10 @@ from settings import *
 
 PUN = "^\s+|\n|\r|\t|\s+$"
 
+result_backend = RedisBackend(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
 broker = RabbitmqBroker(url=RABBITMQ_URL)
+broker.add_middleware(Results(backend=result_backend))
+
 dramatiq.set_broker(broker)
 
 
